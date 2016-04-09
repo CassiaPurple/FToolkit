@@ -27,8 +27,9 @@ FTK = FTK or {
 		"smartsnap.lua",
 		"smeg.lua",
 	},
-	RS = {},
 }
+
+FTK.RS = {}
 
 ErrorNoHalt[[.
 Loading FTK...
