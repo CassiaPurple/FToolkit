@@ -222,12 +222,6 @@ function FTK.UpdateCheck()
 	end)
 end
 
-if not file.Exists("ftoolkit/firstrun.txt","DATA") then
-	FTK.Print("First run detected, downloading files")
-	file.Write("ftoolkit/firstrun.txt","!!!!DO NOT DELETE THIS OR ELSE FTK WILL TRY TO REDOWNLOAD EVERYTHING!!!!")
-	FTK.Update()
-end
-
 FTK.Print("Fully loaded! :D")
 MsgN()
 FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory")
@@ -253,3 +247,12 @@ http.Fetch("https://raw.githubusercontent.com/LUModder/FToolkit/master/ftoolkit.
 )
 
 FTK.LastCommit()
+
+if not file.Exists("ftoolkit/firstrun.txt","DATA") then
+	FTK.ChatPrint("First run detected, downloading files.")
+	FTK.Print("First run detected, downloading files.")
+	file.Write("ftoolkit/firstrun.txt","!!!!DO NOT DELETE THIS OR ELSE FTK WILL TRY TO REDOWNLOAD EVERYTHING!!!!")
+	FTK.Update()
+end
+
+FTK.UpdateCheck()
