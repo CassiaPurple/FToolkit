@@ -37,6 +37,7 @@ Loading FTK...
  \ \_\      \ \_\  \ \_\ \_\
   \/_/       \/_/   \/_/\/_/
 Written by Flex (STEAM_0:0:58178275)
+https://github.com/LUModder/FToolkit
 ]]
 
 if epoe then
@@ -115,28 +116,32 @@ function FTK.Print(txt)
 		epoe.MsgC(Color(255,255,255),txt.."\n")
 	end
 end
+function FTK.ChatPrint(txt)
+	chat.AddText(Color(0,150,130),"[FToolkit] ",Color(255,255,255),txt)
+end
 
 function FTK.LoadAll()
 	for _,f in pairs(file.Find("lua/ftoolkit/*","GAME")) do
-		RunString(file.Read("lua/ftoolkit/"..f,"GAME"))
+		CompileString(file.Read("lua/ftoolkit/"..f,"GAME"),f,false)
 		FTK.Print("Loaded "..f)
 	end
 end
 
 function FTK.LoadAllData()
 	for _,f in pairs(file.Find("ftoolkit/*","DATA")) do
-		RunString(file.Read("ftoolkit/"..f,"DATA"))
+		if f == "firstrun.txt" then continue end
+		CompileString(file.Read("ftoolkit/"..f,"DATA"),f,false)
 		FTK.Print("Loaded "..f)
 	end
 end
 
 function FTK.LoadSingleFile(f)
-	RunString(file.Read("ftoolkit/"..f,"LUA"))
+	CompileString(file.Read("ftoolkit/"..f,"LUA"),f,false)
 	FTK.Print("Loaded "..f)
 end
 
 function FTK.LoadDataFile(f)
-	RunString(file.Read("ftoolkit/"..f,"DATA"))
+	CompileString(file.Read("ftoolkit/"..f,"DATA"),f,false)
 	FTK.Print("Loaded "..f)
 end
 
@@ -151,7 +156,7 @@ function FTK.SaveURL(url,name)
 	end)
 end
 
-local url = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\76\85\77\111\100\100\101\114\47\70\84\111\111\108\107\105\116\47\109\97\115\116\101\114\47\115\99\114\105\112\116\115\47"
+local url = "https://raw.githubusercontent.com/LUModder/FToolkit/scripts/"
 
 function FTK.Update()
 	for _,f in pairs(FTK.FileList) do
@@ -162,6 +167,35 @@ function FTK.Update()
 	end
 end
 
+function FTK.LastCommit()
+	local lc = {}
+	local lc2 = {}
+	http.Fetch("https://api.github.com/repos/LUModder/FToolkit/commits",
+	function(body)
+		lc = util.JSONToTable(body)[1]
+		http.Fetch("https://api.github.com/repos/LUModder/FToolkit/commits/"..lc.sha,
+		function(body)
+			lc2 = util.JSONToTable(body)
+			FTK.ChatPrint("Lastest FTK Commit:")
+			chat.AddText(Color(255,255,255),"Commit ",Color(0,150,130),lc.sha,Color(255,255,255)," by ",Color(0,150,130),lc.commit.author.name)
+			chat.AddText(Color(255,255,255),"\t"..lc.commit.message)
+			chat.AddText(Color(0,150,130),"Files:")
+			for _,f in pairs(lc2.files) do
+				if f.additions == 0 then prefix = "D"
+				elseif f.deletions == 0 then prefix = "A"
+				else prefix = "U" end
+				chat.AddText(Color(0,150,130),prefix,Color(255,255,255),"\t"..f.filename)
+			end
+		end,
+		function(err)
+			FTK.Print("Error getting commit info: "..err)
+		end)
+	end,
+	function(err)
+		FTK.Print("Error getting commit info: "..err)
+	end)
+end
+
 function FTK.UpdateCheck()
 	FTK.Print("STARTING UPDATE CHECK")
 	local upd = 0
@@ -170,18 +204,22 @@ function FTK.UpdateCheck()
 		function(a)
 			if file.Exists("ftoolkit/"..f,"DATA") and file.Read("ftoolkit/"..f,"DATA") == a then
 				FTK.Print(f.." up to date.")
-				upd = upd+1
 			else
 				FTK.Print(f.." missing, modified or needs updating.")
+				upd = upd+1
 			end
 		end,
 		function(e)
-			FTK.Print("Error reading file: "..err)
+			FTK.Print("Error reading file: "..e)
 		end)
 	end
-	FTK.Print("ENDING UPDATE CHECK")
-	FTK.Print(upd.." files need to be updated.")
-	FTK.Print("Please backup any modifications and run FTK.Update()")
+	timer.Simple(5,function()
+		FTK.Print("ENDING UPDATE CHECK")
+		FTK.Print(upd.." files need to be updated.")
+		if upd > 0 then
+			FTK.Print("Please backup any modifications and run FTK.Update()")
+		end
+	end)
 end
 
 if not file.Exists("ftoolkit/firstrun.txt","DATA") then
@@ -193,3 +231,25 @@ end
 FTK.Print("Fully loaded! :D")
 MsgN()
 FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory")
+
+http.Fetch("https://raw.githubusercontent.com/LUModder/FToolkit/master/ftoolkit.lua",
+	function(a)
+		if file.Exists("autorun/client/ftoolkit.lua","LUA") and file.Read("autorun/client/ftoolkit.lua","LUA") == a then
+			FTK.ChatPrint("FTK up to date.")
+			FTK.Print("FTK up to date.")
+		else
+			if LocalPlayer():SteamID() == "STEAM_0:0:58178275" then
+				FTK.ChatPrint("Running FTK dev version.")
+				FTK.Print("Running FTK dev version.")
+			else
+				FTK.ChatPrint("FTK modified or needs updating.")
+				FTK.Print("FTK modified or needs updating.")
+			end
+		end
+	end,
+	function(err)
+		FTK.Print("Error getting file: "..err)
+	end
+)
+
+FTK.LastCommit()
