@@ -197,6 +197,7 @@ function FTK.LastCommit()
 end
 
 function FTK.UpdateCheck()
+	FTK.ChatPrint("STARTING UPDATE CHECK")
 	FTK.Print("STARTING UPDATE CHECK")
 	local upd = 0
 	for _,f in pairs(FTK.FileList) do
@@ -214,7 +215,9 @@ function FTK.UpdateCheck()
 		end)
 	end
 	timer.Simple(5,function()
+		FTK.ChatPrint("ENDING UPDATE CHECK")
 		FTK.Print("ENDING UPDATE CHECK")
+		FTK.ChatPrint(upd.." files need to be updated.")
 		FTK.Print(upd.." files need to be updated.")
 		if upd > 0 then
 			FTK.Print("Please backup any modifications and run FTK.Update()")
