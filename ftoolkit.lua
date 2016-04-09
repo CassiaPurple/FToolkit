@@ -3,7 +3,15 @@ FToolkit: An automated script loader
 by Flex
 --]]
 
-require("gaceio")
+require("filesystem")
+
+local function FSWrite(name,str)
+	local f = filesystem.Open(name,"wb","DATA")
+	if not f then return end
+
+	f:Write(str)
+	f:Close()
+end
 
 file.CreateDir("ftoolkit")
 
@@ -135,18 +143,7 @@ end
 function FTK.SaveURL(url,name)
 	http.Fetch(url,
 	function(content)
-		file.Write("ftoolkit/"..name..".txt",content)
-		FTK.Print("Wrote "..name.." to data/ftoolkit.")
-	end,
-	function(err)
-		FTK.Print("Error getting file: "..err)
-	end)
-end
-
-function FTK.SaveURLToLua(url,name)
-	http.Fetch(url,
-	function(content)
-		gaceio.Write("./garrysmod/lua/ftoolkit/"..name,content)
+		FSWrite("ftoolkit/"..name,content)
 		FTK.Print("Wrote "..name.." to data/ftoolkit.")
 	end,
 	function(err)
@@ -158,10 +155,10 @@ local url = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\
 
 function FTK.Update()
 	for _,f in pairs(FTK.FileList) do
-		if file.Exists("ftoolkit/"..f,"LUA") then
-			gaceio.Delete("./garrysmod/lua/ftoolkit/"..f)
+		if file.Exists("ftoolkit/"..f,"DATA") then
+			file.Delete("ftoolkit/"..f )
 		end
-		FTK.SaveURLToLua(url..f,f)
+		FTK.SaveURL(url..f,f)
 	end
 end
 
@@ -171,7 +168,7 @@ function FTK.UpdateCheck()
 	for _,f in pairs(FTK.FileList) do
 		http.Fetch(url..f,
 		function(a)
-			if file.Exists("ftoolkit/"..f,"LUA") and file.Read("ftoolkit/"..f,"LUA") == a then
+			if file.Exists("ftoolkit/"..f,"DATA") and file.Read("ftoolkit/"..f,"DATA") == a then
 				FTK.Print(f.." up to date.")
 				upd = upd+1
 			else
@@ -195,4 +192,4 @@ end
 
 FTK.Print("Fully loaded! :D")
 MsgN()
-FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory\nFTK.SaveURLToLua(url,name) - Save a URL to lua directory")
+FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory")

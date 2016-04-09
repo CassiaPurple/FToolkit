@@ -4,7 +4,7 @@ Script Loader for Garry's Mod
 
 Requirements
 =======
- - [g-ace-io](https://github.com/wyozi/g-ace-io/releases)
+ - [gm_filesystem](https://github.com/danielga/gm_filesystem/releases)
  - GLua knowledge
  - menu2 or lua bypass (depending on your use for this script)
 
@@ -15,5 +15,6 @@ Installation
 
 Usage
 =======
- - ```include("autorun/client/ftoolkit.lua")``` OR
+ - ```include("autorun/client/ftoolkit.lua")```
+OR
  - ```RunString(file.Read("autorun/client/ftoolkit.lua","LUA"))```
