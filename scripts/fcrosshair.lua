@@ -2,13 +2,21 @@ local remove = {
 	CHudCrosshair = true,
 }
 
+local dc_r = CreateClientConVar("fc_dc_r", 0  ):GetInt()
+local dc_g = CreateClientConVar("fc_dc_g", 150):GetInt()
+local dc_b = CreateClientConVar("fc_dc_b", 130):GetInt()
+local hc_r = CreateClientConVar("fc_hc_r", 33 ):GetInt()
+local hc_g = CreateClientConVar("fc_hc_g", 91 ):GetInt()
+local hc_b = CreateClientConVar("fc_hc_b", 51 ):GetInt()
+
 hook.Add("HUDShouldDraw","FCrosshair",function(name)
 	if remove[name] then return false end
 end )
 
 hook.Add("HUDPaint","FCrosshair",function()
+	local HoverColor,DefaultColor = Color(hc_r,hc_g,hc_b),Color(dc_r,dc_g,dc_b)
 	local tr = LocalPlayer():GetEyeTrace()
-	local c_col = IsValid(tr.Entity) and Color(33,91,51) or Color(0,150,130)
+	local c_col = IsValid(tr.Entity) and HoverColor or DefaultColor
 	local trp = {
 		x=ScrW()/2,
 		y=ScrH()/2,
