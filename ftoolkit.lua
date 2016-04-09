@@ -171,7 +171,7 @@ function FTK.UpdateCheck()
 	for _,f in pairs(FTK.FileList) do
 		http.Fetch(url..f,
 		function(a)
-			if file.Exists(file.Read("ftoolkit/"..f,"LUA") and file.Read("ftoolkit/"..f,"LUA") == a then
+			if file.Exists("ftoolkit/"..f,"LUA") and file.Read("ftoolkit/"..f,"LUA") == a then
 				FTK.Print(f.." up to date.")
 				upd = upd+1
 			else
