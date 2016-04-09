@@ -10,11 +10,10 @@ Requirements
 
 Installation
 =======
- - Drop into autorun/client/
+ - Drop into ```autorun/client/```
  - Ignore the scripts folder (it'll auto download on run)
 
 Usage
 =======
- - include("autorun/client/ftoolkit.lua")
-OR
- - RunString(file.Read("autorun/client/ftoolkit.lua","LUA"))
+ - ```include("autorun/client/ftoolkit.lua")``` OR
+ - ```RunString(file.Read("autorun/client/ftoolkit.lua","LUA"))```
