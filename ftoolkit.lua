@@ -26,8 +26,8 @@ FTK = FTK or {
 		"propinfo.lua",
 		"smartsnap.lua",
 		"smeg.lua",
-	}
-	RS = {}
+	},
+	RS = {},
 }
 
 ErrorNoHalt[[.
@@ -123,7 +123,7 @@ end
 
 function FTK.LoadAll()
 	for _,f in pairs(file.Find("lua/ftoolkit/*","GAME")) do
-		CompileString(file.Read("lua/ftoolkit/"..f,"GAME"),f,false)
+		CompileString(file.Read("lua/ftoolkit/"..f,"GAME"),f,true)
 		FTK.Print("Loaded "..f)
 	end
 end
@@ -131,25 +131,25 @@ end
 function FTK.LoadAllData()
 	for _,f in pairs(file.Find("ftoolkit/*","DATA")) do
 		if f == "firstrun.txt" then continue end
-		CompileString(file.Read("ftoolkit/"..f,"DATA"),f,false)
+		CompileString(file.Read("ftoolkit/"..f,"DATA"),f,true)
 		FTK.Print("Loaded "..f)
 	end
 end
 
 function FTK.LoadSingleFile(f)
-	CompileString(file.Read("ftoolkit/"..f,"LUA"),f,false)
+	CompileString(file.Read("ftoolkit/"..f,"LUA"),f,true)
 	FTK.Print("Loaded "..f)
 end
 
 function FTK.LoadDataFile(f)
-	CompileString(file.Read("ftoolkit/"..f,"DATA"),f,false)
+	CompileString(file.Read("ftoolkit/"..f,"DATA"),f,true)
 	FTK.Print("Loaded "..f)
 end
 
 --RunString Variants to bypass AC's
 function FTK.RS.LoadAll()
 	for _,f in pairs(file.Find("lua/ftoolkit/*","GAME")) do
-		RunString(file.Read("lua/ftoolkit/"..f,"GAME"),f,false)
+		RunString(file.Read("lua/ftoolkit/"..f,"GAME"),f,true)
 		FTK.Print("Loaded "..f)
 	end
 end
@@ -157,18 +157,18 @@ end
 function FTK.RS.LoadAllData()
 	for _,f in pairs(file.Find("ftoolkit/*","DATA")) do
 		if f == "firstrun.txt" then continue end
-		RunString(file.Read("ftoolkit/"..f,"DATA"),f,false)
+		RunString(file.Read("ftoolkit/"..f,"DATA"),f,true)
 		FTK.Print("Loaded "..f)
 	end
 end
 
 function FTK.RS.LoadSingleFile(f)
-	RunString(file.Read("ftoolkit/"..f,"LUA"),f,false)
+	RunString(file.Read("ftoolkit/"..f,"LUA"),f,true)
 	FTK.Print("Loaded "..f)
 end
 
 function FTK.RS.LoadDataFile(f)
-	RunString(file.Read("ftoolkit/"..f,"DATA"),f,false)
+	RunString(file.Read("ftoolkit/"..f,"DATA"),f,true)
 	FTK.Print("Loaded "..f)
 end
 
