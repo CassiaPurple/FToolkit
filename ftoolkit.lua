@@ -156,7 +156,7 @@ function FTK.SaveURL(url,name)
 	end)
 end
 
-local url = "https://raw.githubusercontent.com/LUModder/FToolkit/scripts/"
+local url = "https://raw.githubusercontent.com/LUModder/FToolkit/master/scripts/"
 
 function FTK.Update()
 	for _,f in pairs(FTK.FileList) do
