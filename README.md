@@ -15,6 +15,6 @@ Installation
 
 Usage
 =======
- - ```include("autorun/client/ftoolkit.lua")```
-OR
- - ```RunString(file.Read("autorun/client/ftoolkit.lua","LUA"))```
+ - ```include("autorun/client/ftoolkit.lua")``` OR
+ - ```CompileString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",false)```
+ - ```RunString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",false)``` (AC bypass for most)

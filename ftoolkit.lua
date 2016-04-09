@@ -27,6 +27,7 @@ FTK = FTK or {
 		"smartsnap.lua",
 		"smeg.lua",
 	}
+	RS = {}
 }
 
 ErrorNoHalt[[.
@@ -145,6 +146,32 @@ function FTK.LoadDataFile(f)
 	FTK.Print("Loaded "..f)
 end
 
+--RunString Variants to bypass AC's
+function FTK.RS.LoadAll()
+	for _,f in pairs(file.Find("lua/ftoolkit/*","GAME")) do
+		RunString(file.Read("lua/ftoolkit/"..f,"GAME"),f,false)
+		FTK.Print("Loaded "..f)
+	end
+end
+
+function FTK.RS.LoadAllData()
+	for _,f in pairs(file.Find("ftoolkit/*","DATA")) do
+		if f == "firstrun.txt" then continue end
+		RunString(file.Read("ftoolkit/"..f,"DATA"),f,false)
+		FTK.Print("Loaded "..f)
+	end
+end
+
+function FTK.RS.LoadSingleFile(f)
+	RunString(file.Read("ftoolkit/"..f,"LUA"),f,false)
+	FTK.Print("Loaded "..f)
+end
+
+function FTK.RS.LoadDataFile(f)
+	RunString(file.Read("ftoolkit/"..f,"DATA"),f,false)
+	FTK.Print("Loaded "..f)
+end
+
 function FTK.SaveURL(url,name)
 	http.Fetch(url,
 	function(content)
@@ -227,7 +254,7 @@ end
 
 FTK.Print("Fully loaded! :D")
 MsgN()
-FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory")
+FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory\nThere are RunString variants of Load functions, they have the prefix FTK.RS")
 
 http.Fetch("https://raw.githubusercontent.com/LUModder/FToolkit/master/ftoolkit.lua",
 	function(a)
