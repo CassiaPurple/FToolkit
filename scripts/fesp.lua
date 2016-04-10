@@ -94,7 +94,7 @@ local function Friend(p)
 		draw.DrawText("Distance: "..math.Round(p:GetPos():Distance(LocalPlayer():GetPos())),"BudgetLabel",pos.x,pos.y,Color(100,200,100),TEXT_ALIGN_CENTER)
 		draw.DrawText("Health: "..p:Health(),"BudgetLabel",pos.x,pos.y+10,Color(200,100,100),TEXT_ALIGN_CENTER)
 		draw.DrawText(IsValid(p:GetActiveWeapon()) and p:GetActiveWeapon():GetClass() or "dead","BudgetLabel",pos.x,pos.y+20,Color(100,200,200),TEXT_ALIGN_CENTER)
-		draw.DrawText("$"..(p.getDarkRPVar and p:getDarkRPVar("money") or p.GetCoins and p:GetCoins() or p.GetMoney and p:GetMoney()),"BudgetLabel",pos.x,pos.y+30,Color(200,200,100),TEXT_ALIGN_CENTER)
+		draw.DrawText("$"..(p.getDarkRPVar and p:getDarkRPVar("money") or p.GetCoins and p:GetCoins() or p.GetMoney and p:GetMoney() or ""),"BudgetLabel",pos.x,pos.y+30,Color(200,200,100),TEXT_ALIGN_CENTER)
 	cam.End2D()
 
 	Bounding(p,rainbow)
