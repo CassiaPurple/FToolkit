@@ -86,7 +86,7 @@ end
 local wire = Material("models/wireframe")
 local function Friend(p)
 	local node = p:EyePos()+Vector(0,0,20)
-	local rainbow = HSVToColor(RealTime()*50%360,0.375,1)
+	local rainbow = HSVToColor(RealTime()*50%360,1,0.75)
 	cam.Start2D()
 		local pos = node:ToScreen()
 		draw.DrawText((p:IsSuperAdmin() and "[SA][F] " or p:IsAdmin() and "[A][F] " or "[F] ")..p:Name(),"BudgetLabel",pos.x,pos.y-20,rainbow,TEXT_ALIGN_CENTER)
@@ -139,7 +139,7 @@ local function FPS()
 	g_FrameTime:PerformLayout(0,0)
 	g_FrameTime:InvalidateLayout()
 	function g_FrameTime.Paint(self,w,h)
-		local rainbow = HSVToColor(RealTime()*50%360,0.375,1)
+		local rainbow = HSVToColor(RealTime()*50%360,1,0.75)
 		local q=0.0001
 		local ft=FrameTime()
 
@@ -189,7 +189,7 @@ local function FPS()
 end
 
 hook.Add("HUDPaint","FTK.ESP",function()
-	local rainbow = HSVToColor(RealTime()*50%360,0.375,1)
+	local rainbow = HSVToColor(RealTime()*50%360,1,0.75)
 	draw.DrawText("Players: "..table.Count(player.GetAll()),"BudgetLabel",4,4,rainbow)
 	draw.DrawText("Printers: "..table.Count(ents.FindByClass("*print*")),"BudgetLabel",4,14,rainbow)
 	if not FESPOn:GetBool() then return end
