@@ -1,6 +1,31 @@
 local FESPOn = CreateClientConVar("fesp_on",0,false)
 local BoundingOn = CreateClientConVar("fesp_bounding",1)
+local Bounding2D = CreateClientConVar("fesp_bounding_2d",0)
 local DrawDist = CreateClientConVar("fesp_drawdist",2000)
+
+local TheBones = {
+	"ValveBiped.Bip01_Head1",
+	"ValveBiped.Bip01_Neck1",
+	"ValveBiped.Bip01_Spine4",
+	"ValveBiped.Bip01_Spine2",
+	"ValveBiped.Bip01_Spine1",
+	"ValveBiped.Bip01_Spine",
+	"ValveBiped.Bip01_Pelvis",
+	"ValveBiped.Bip01_R_UpperArm",
+	"ValveBiped.Bip01_R_Forearm",
+	"ValveBiped.Bip01_R_Hand",
+	"ValveBiped.Bip01_L_UpperArm",
+	"ValveBiped.Bip01_L_Forearm",
+	"ValveBiped.Bip01_L_Hand",
+	"ValveBiped.Bip01_R_Thigh",
+	"ValveBiped.Bip01_R_Calf",
+	"ValveBiped.Bip01_R_Foot",
+	"ValveBiped.Bip01_R_Toe0",
+	"ValveBiped.Bip01_L_Thigh",
+	"ValveBiped.Bip01_L_Calf",
+	"ValveBiped.Bip01_L_Foot",
+	"ValveBiped.Bip01_L_Toe0",
+}
 
 local function ESPGetPos( Ent )
 	if Ent:IsValid() then
@@ -46,38 +71,102 @@ local function ESPGetPos( Ent )
 	end
 end
 
+local function ShowBones(p,c)
+	if BoundingOn:GetInt() == 0 or BoundingOn:GetInt() == 1 then return end
+	local Bones = {}
+	local Success = true
+	for k, v in pairs(TheBones) do
+		if p:LookupBone(v) != nil && p:GetBonePosition(p:LookupBone(v)) != nil then
+			table.insert( Bones, p:GetBonePosition(p:LookupBone(v)):ToScreen() )
+		else
+			Success = false --Just incase entities have some bones but not others (I have no idea if that happens, but I figgured better safe then sorry)
+			return
+		end
+	end
+	if Success then
+		surface.SetDrawColor(c)
+		--Spine
+		surface.DrawLine( Bones[1].x, Bones[1].y, Bones[2].x, Bones[2].y )
+		surface.DrawLine( Bones[2].x, Bones[2].y, Bones[3].x, Bones[3].y )
+		surface.DrawLine( Bones[3].x, Bones[3].y, Bones[4].x, Bones[4].y )
+		surface.DrawLine( Bones[4].x, Bones[4].y, Bones[5].x, Bones[5].y )
+		surface.DrawLine( Bones[5].x, Bones[5].y, Bones[6].x, Bones[6].y )
+		surface.DrawLine( Bones[6].x, Bones[6].y, Bones[7].x, Bones[7].y )
+
+		--Legs
+		surface.DrawLine( Bones[7].x, Bones[7].y, Bones[14].x, Bones[14].y )
+		surface.DrawLine( Bones[14].x, Bones[14].y, Bones[15].x, Bones[15].y )
+		surface.DrawLine( Bones[15].x, Bones[15].y, Bones[16].x, Bones[16].y )
+		surface.DrawLine( Bones[16].x, Bones[16].y, Bones[17].x, Bones[17].y )
+
+		surface.DrawLine( Bones[7].x, Bones[7].y, Bones[18].x, Bones[18].y )
+		surface.DrawLine( Bones[18].x, Bones[18].y, Bones[19].x, Bones[19].y )
+		surface.DrawLine( Bones[19].x, Bones[19].y, Bones[20].x, Bones[20].y )
+		surface.DrawLine( Bones[20].x, Bones[20].y, Bones[21].x, Bones[21].y )
+
+		--Arms
+		surface.DrawLine( Bones[3].x, Bones[3].y, Bones[8].x, Bones[8].y )
+		surface.DrawLine( Bones[8].x, Bones[8].y, Bones[9].x, Bones[9].y )
+		surface.DrawLine( Bones[9].x, Bones[9].y, Bones[10].x, Bones[10].y )
+
+		surface.DrawLine( Bones[3].x, Bones[3].y, Bones[11].x, Bones[11].y )
+		surface.DrawLine( Bones[11].x, Bones[11].y, Bones[12].x, Bones[12].y )
+		surface.DrawLine( Bones[12].x, Bones[12].y, Bones[13].x, Bones[13].y )
+
+	end
+end
+
 local function Bounding(p,c)
-	if not BoundingOn:GetBool() then return end
+	if BoundingOn:GetInt() == 0 or BoundingOn:GetInt() == 2 then return end
 	local MaxX, MaxY, MinX, MinY, V1, V2, V3, V4, V5, V6, V7, V8 = ESPGetPos(p)
 	local ESPPos = MinY
 	surface.SetDrawColor(c)
-	//Top Box
-	surface.DrawLine( V4.x, V4.y, V6.x, V6.y )
-	surface.DrawLine( V1.x, V1.y, V8.x, V8.y )
-	surface.DrawLine( V6.x, V6.y, V8.x, V8.y )
-	surface.DrawLine( V4.x, V4.y, V1.x, V1.y )
+	if Bounding2D:GetBool() then
+		surface.DrawLine( MaxX, MaxY, MinX, MaxY )
+		surface.DrawLine( MaxX, MaxY, MaxX, MinY )
+		surface.DrawLine( MinX, MinY, MaxX, MinY )
+		surface.DrawLine( MinX, MinY, MinX, MaxY )
+	else
+		--Top Box
+		surface.DrawLine( V4.x, V4.y, V6.x, V6.y )
+		surface.DrawLine( V1.x, V1.y, V8.x, V8.y )
+		surface.DrawLine( V6.x, V6.y, V8.x, V8.y )
+		surface.DrawLine( V4.x, V4.y, V1.x, V1.y )
 
-	//Bottom Box
-	surface.DrawLine( V3.x, V3.y, V5.x, V5.y )
-	surface.DrawLine( V2.x, V2.y, V7.x, V7.y )
-	surface.DrawLine( V3.x, V3.y, V2.x, V2.y )
-	surface.DrawLine( V5.x, V5.y, V7.x, V7.y )
+		--Bottom Box
+		surface.DrawLine( V3.x, V3.y, V5.x, V5.y )
+		surface.DrawLine( V2.x, V2.y, V7.x, V7.y )
+		surface.DrawLine( V3.x, V3.y, V2.x, V2.y )
+		surface.DrawLine( V5.x, V5.y, V7.x, V7.y )
 
-	//Verticals
-	surface.DrawLine( V3.x, V3.y, V4.x, V4.y )
-	surface.DrawLine( V2.x, V2.y, V1.x, V1.y )
-	surface.DrawLine( V7.x, V7.y, V8.x, V8.y )
-	surface.DrawLine( V5.x, V5.y, V6.x, V6.y )
+		--Verticals
+		surface.DrawLine( V3.x, V3.y, V4.x, V4.y )
+		surface.DrawLine( V2.x, V2.y, V1.x, V1.y )
+		surface.DrawLine( V7.x, V7.y, V8.x, V8.y )
+		surface.DrawLine( V5.x, V5.y, V6.x, V6.y )
+	end
 end
 
 local function Printer(p)
 	local node = p:GetPos()+Vector(0,0,20)
 	cam.Start2D()
 		local pos = node:ToScreen()
-		draw.DrawText("Distance: "..math.Round(p:GetPos():Distance(LocalPlayer():GetPos())),"BudgetLabel",pos.x,pos.y,Color(200,100,100),TEXT_ALIGN_CENTER)
+		draw.DrawText("Distance: "..math.Round(p:GetPos():Distance(LocalPlayer():GetPos())),"BudgetLabel",pos.x,pos.y,Color(100,200,100),TEXT_ALIGN_CENTER)
 		if p.Base == "rprint_base" then
 			draw.DrawText("$"..p:GetMoney(),"BudgetLabel",pos.x,pos.y-10,Color(200,200,100),TEXT_ALIGN_CENTER)
 		end
+	cam.End2D()
+
+	Bounding(p,Color(200,200,100))
+end
+
+local function Coin(p)
+	if not p.GetValue then return end
+	local node = p:GetPos()+Vector(0,0,10)
+	cam.Start2D()
+		local pos = node:ToScreen()
+		draw.DrawText("Distance: "..math.Round(p:GetPos():Distance(LocalPlayer():GetPos())),"BudgetLabel",pos.x,pos.y,Color(100,200,100),TEXT_ALIGN_CENTER)
+		draw.DrawText("$"..p:GetValue(),"BudgetLabel",pos.x,pos.y-10,Color(200,200,100),TEXT_ALIGN_CENTER)
 	cam.End2D()
 
 	Bounding(p,Color(200,200,100))
@@ -98,6 +187,7 @@ local function Friend(p)
 	cam.End2D()
 
 	Bounding(p,rainbow)
+	ShowBones(p,rainbow)
 end
 
 local function Player(p)
@@ -115,6 +205,7 @@ local function Player(p)
 	cam.End2D()
 
 	Bounding(p,Color(200,100,100))
+	ShowBones(p,Color(200,100,100))
 end
 
 local surface=surface
@@ -196,6 +287,9 @@ hook.Add("HUDPaint","FTK.ESP",function()
 	for _,ent in pairs(ents.FindByClass("*print*")) do
 		Printer(ent)
 	end
+	for _,ent in pairs(ents.FindByClass("coin")) do
+		Coin(ent)
+	end
 	for _,ply in pairs(player.GetAll()) do
 		if ply:GetFriendStatus() == "friend" then
 			Friend(ply)
@@ -206,3 +300,17 @@ hook.Add("HUDPaint","FTK.ESP",function()
 end)
 
 FPS()
+
+local function FESPPrint(txt)
+	MsgC(Color(0,150,130),"[FESP] ",Color(255,255,255),txt.."\n")
+	if epoe then
+		epoe.MsgC(Color(0,150,130),"[FESP] ")
+		epoe.MsgC(Color(255,255,255),txt.."\n")
+	end
+end
+
+FESPPrint("Concommands:")
+FESPPrint("fesp_on          [0/1]     - Toggle FESP")
+FESPPrint("fesp_drawdist    [number]  - How far people can draw (friends, coins and printers excluded)")
+FESPPrint("fesp_bounding    [0/1/2/3] - 0: off,               1: bounding boxes only, 2: bones only, 3: both")
+FESPPrint("fesp_bounding_2d [0/1]     - 0: 3D bounding boxes, 1: 2D bounding boxes")
