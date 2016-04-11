@@ -18,3 +18,31 @@ Usage
  - ```include("autorun/client/ftoolkit.lua")``` OR
  - ```CompileString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",true)```
  - ```RunString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",true)```
+
+Chat Commands
+=======
+All commands start with !, / or .
+
+ - rs - RunString alias
+ - ldf - FTK.LoadDataFile alias
+ - lsf - FTK.LoadSingleFile alias
+ - rs.ldf - FTK.RS.LoadDataFile alias
+ - rs.lsf - FTK.RS.LoadSingleFile alias
+
+Credits
+=======
+As I do not own all the scripts in the scripts folder, so here are the original authors.
+
+ - autojump - Metastruct
+ - CTP - CapsAdmin
+ - Frametime (integrated in FESP) - Metastruct
+ - FZoom - Falco (FPjte)
+ - Picker2 - tldevtools/Metastruct
+ - Propinfo - Ducky Canard
+ - SmartSnap - Various Authors
+ - Smeg Hack - mmmaaalll1
+
+My own scripts added:
+
+ - FCrosshair
+ - FESP
