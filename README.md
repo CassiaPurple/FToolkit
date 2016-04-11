@@ -41,6 +41,7 @@ As I do not own all the scripts in the scripts folder, so here are the original 
  - Propinfo - Ducky Canard
  - SmartSnap - Various Authors
  - Smeg Hack - mmmaaalll1
+ - menu_plugins (used for fading colors in ASCII art) - Various Authors
 
 My own scripts added:
 
