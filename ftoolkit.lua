@@ -289,23 +289,23 @@ end
 FTK.UpdateCheck()
 
 hook.Add("PlayerSay","FTKChatCommands",function(ply,txt)
-	if txt:match("^!rs") or txt:match("^\.rs") or txt:match("^/rs") then
+	if txt:match("^!rs") or txt:match("^.rs") or txt:match("^/rs") then
 		RunString(string.sub(txt,4,string.len(txt)),"FTK.RS",true)
 		return ""
 	end
-	if txt:match("^!ldf") or txt:match("^\.ldf") or txt:match("^/ldf") then
+	if txt:match("^!ldf") or txt:match("^.ldf") or txt:match("^/ldf") then
 		FTK.LoadDataFile(string.sub(txt,5,string.len(txt)))
 		return ""
 	end
-	if txt:match("^!lsf") or txt:match("^\.lsf") or txt:match("^/lsf") then
+	if txt:match("^!lsf") or txt:match("^.lsf") or txt:match("^/lsf") then
 		FTK.LoadSingleFile(string.sub(txt,5,string.len(txt)))
 		return ""
 	end
-	if txt:match("^!rs\.ldf") or txt:match("^\.rs\.ldf") or txt:match("^/rs\.ldf") then
+	if txt:match("^!rs.ldf") or txt:match("^.rs.ldf") or txt:match("^/rs.ldf") then
 		FTK.RS.LoadDataFile(string.sub(txt,8,string.len(txt)))
 		return ""
 	end
-	if txt:match("^!rs\.lsf") or txt:match("^\.rs\.lsf") or txt:match("^/rs\.lsf") then
+	if txt:match("^!rs.lsf") or txt:match("^.rs.lsf") or txt:match("^/rs.lsf") then
 		FTK.RS.LoadSingleFile(string.sub(txt,8,string.len(txt)))
 		return ""
 	end
