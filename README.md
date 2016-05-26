@@ -16,7 +16,7 @@ Installation
 Usage
 =======
  - ```include("autorun/client/ftoolkit.lua")``` OR
- - ```CompileString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",true)```
+ - ```CompileString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",true)()```
  - ```RunString(file.Read("autorun/client/ftoolkit.lua","LUA"),"FToolkit",true)```
 
 Chat Commands

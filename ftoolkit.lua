@@ -124,7 +124,7 @@ end
 
 function FTK.LoadAll()
 	for _,f in pairs(file.Find("lua/ftoolkit/*","GAME")) do
-		CompileString(file.Read("lua/ftoolkit/"..f,"GAME"),f,true)
+		CompileString(file.Read("lua/ftoolkit/"..f,"GAME"),f,true)()
 		FTK.Print("Loaded "..f)
 	end
 end
@@ -132,18 +132,18 @@ end
 function FTK.LoadAllData()
 	for _,f in pairs(file.Find("ftoolkit/*","DATA")) do
 		if f == "firstrun.txt" then continue end
-		CompileString(file.Read("ftoolkit/"..f,"DATA"),f,true)
+		CompileString(file.Read("ftoolkit/"..f,"DATA"),f,true)()
 		FTK.Print("Loaded "..f)
 	end
 end
 
 function FTK.LoadSingleFile(f)
-	CompileString(file.Read("ftoolkit/"..f,"LUA"),f,true)
+	CompileString(file.Read("ftoolkit/"..f,"LUA"),f,true)()
 	FTK.Print("Loaded "..f)
 end
 
 function FTK.LoadDataFile(f)
-	CompileString(file.Read("ftoolkit/"..f,"DATA"),f,true)
+	CompileString(file.Read("ftoolkit/"..f,"DATA"),f,true)()
 	FTK.Print("Loaded "..f)
 end
 
@@ -185,6 +185,7 @@ function FTK.SaveURL(url,name)
 end
 
 local url = "https://raw.githubusercontent.com/LUModder/FToolkit/master/scripts/"
+local mainurl = "https://raw.githubusercontent.com/LUModder/FToolkit/master/ftoolkit.lua"
 
 function FTK.Update()
 	for _,f in pairs(FTK.FileList) do
@@ -255,7 +256,7 @@ end
 
 FTK.Print("Fully loaded! :D")
 MsgN()
-FTK.Print("\\/\\/\\/\\/\\/\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory\nThere are RunString variants of Load functions, they have the prefix FTK.RS")
+FTK.Print("FTK Help Menu Start\nFTK Functions:\nFTK.LoadDataFile(file) - Runs a file found in data/ftoolkit\nFTK.LoadSingleFile(f) - Load a lua file\nFTK.SaveURL(url,name) - Save a URL to data directory\nThere are RunString variants of Load functions, they have the prefix FTK.RS")
 
 http.Fetch("https://raw.githubusercontent.com/LUModder/FToolkit/master/ftoolkit.lua",
 	function(a)
@@ -263,13 +264,8 @@ http.Fetch("https://raw.githubusercontent.com/LUModder/FToolkit/master/ftoolkit.
 			FTK.ChatPrint("FTK up to date.")
 			FTK.Print("FTK up to date.")
 		else
-			if LocalPlayer():SteamID() == "STEAM_0:0:58178275" then
-				FTK.ChatPrint("Running FTK dev version.")
-				FTK.Print("Running FTK dev version.")
-			else
-				FTK.ChatPrint("FTK modified or needs updating.")
-				FTK.Print("FTK modified or needs updating.")
-			end
+			FTK.ChatPrint("FTK modified or needs updating.")
+			FTK.Print("FTK modified or needs updating.")
 		end
 	end,
 	function(err)
@@ -288,7 +284,7 @@ end
 
 FTK.UpdateCheck()
 
-hook.Add("PlayerSay","FTKChatCommands",function(ply,txt)
+hook.Add("OnPlayerChat","FTKChatCommands",function(ply,txt)
 	if txt:match("^!rs") or txt:match("^.rs") or txt:match("^/rs") then
 		RunString(string.sub(txt,4,string.len(txt)),"FTK.RS",true)
 		return ""
